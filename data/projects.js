@@ -29,7 +29,7 @@ window.SHOWCASE = {
       gallery: ["assets/img/chalkql-virtual-blotter.webp"],
       language: "C#",
       license: "ELv2",
-      tags: ["sql", "entitlements", "query-engine", "access-control", "apache-calcite", "dotnet", "data-platform"],
+      tags: ["sql", "entitlements", "query-engine", "access-control", "apache-calcite", "dotnet", "data-platform", "chalkql"],
       package: { registry: "nuget", id: "ChalkQL", version: "0.6.1" },
       install: "dotnet add package ChalkQL",
       requires: ".NET 10 · JDK 21+ for the Calcite planner",
