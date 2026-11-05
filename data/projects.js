@@ -29,7 +29,7 @@ window.SHOWCASE = {
       gallery: ["assets/img/chalkql-virtual-blotter.webp"],
       language: "C#",
       license: "ELv2",
-      tags: ["sql", "query-engine", "access-control", "apache-calcite", "dotnet", "data-platform"],
+      tags: ["sql", "entitlements", "query-engine", "access-control", "apache-calcite", "dotnet", "data-platform"],
       package: { registry: "nuget", id: "ChalkQL", version: "0.6.1" },
       install: "dotnet add package ChalkQL",
       requires: ".NET 10 · JDK 21+ for the Calcite planner",
@@ -144,7 +144,7 @@ window.SHOWCASE = {
       description:
         "Reception, each GP, the practice manager, each patient and carer, and each waiting-room screen sees the same activity from their own perspective. Each person's feed is theirs alone.",
       cover: "assets/img/tapline-activity_feeds.webp",
-      tags: ["activity-feed", "privacy", "access-control"],
+      tags: ["activity-feed", "privacy", "entitlements", "access-control"],
       run: "dotnet run --project samples/ActivityFeed.Sample",
     },
     {

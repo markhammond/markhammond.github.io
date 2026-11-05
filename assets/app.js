@@ -37,6 +37,36 @@
   // ------------------------------------------------------------------ state
   const state = { q: "", kinds: new Set(), langs: new Set(), tags: new Set(), tagQuery: "", sort: "curated" };
 
+  // Filters live in the query string, so a filtered view can be linked to, e.g.
+  //   ?tag=entitlements   ?tag=sql,entitlements&kind=library   ?lang=TypeScript   ?q=stream
+  // Lists are comma-separated (repeating the parameter works too) and matched without
+  // regard to case; values that match nothing are ignored. `sort` is read too.
+  const URL_LISTS = { kind: "kinds", lang: "langs", tag: "tags" };
+  const known = (fn) => new Map(data.projects.flatMap((p) => [].concat(fn(p) ?? [])).map((v) => [v.toLowerCase(), v]));
+  const KNOWN = { kinds: known((p) => p.kind), langs: known((p) => p.language), tags: known((p) => p.tags) };
+
+  function readUrl() {
+    const params = new URLSearchParams(location.search);
+    for (const [param, key] of Object.entries(URL_LISTS)) {
+      const values = params.getAll(param).flatMap((v) => v.split(",")).map((v) => KNOWN[key].get(v.trim().toLowerCase()));
+      state[key] = new Set(values.filter(Boolean));
+    }
+    state.q = params.get("q") || "";
+    const sort = params.get("sort");
+    state.sort = sort && sort in SORTS ? sort : "curated";
+  }
+
+  function writeUrl() {
+    const parts = [];
+    for (const [param, key] of Object.entries(URL_LISTS)) {
+      if (state[key].size) parts.push(`${param}=${[...state[key]].map(encodeURIComponent).join(",")}`);
+    }
+    if (state.q.trim()) parts.push(`q=${encodeURIComponent(state.q.trim())}`);
+    if (state.sort !== "curated") parts.push(`sort=${encodeURIComponent(state.sort)}`);
+    const search = parts.length ? `?${parts.join("&")}` : "";
+    if (search !== location.search) history.replaceState(history.state, "", location.pathname + search + location.hash);
+  }
+
   // ------------------------------------------------------------------ header bits
   $("#tagline").textContent = data.tagline;
   $("#year").textContent = new Date().getFullYear();
@@ -93,12 +123,15 @@
   $("#tag-search").addEventListener("input", (e) => { state.tagQuery = e.target.value; renderTagFilters(); });
   $("#search").addEventListener("input", (e) => { state.q = e.target.value; render(); });
   $("#sort").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
-  $("#clear-filters").addEventListener("click", () => {
+  function clearFilters() {
     state.kinds.clear(); state.langs.clear(); state.tags.clear(); state.q = ""; state.tagQuery = "";
     $("#search").value = ""; $("#tag-search").value = "";
     for (const cb of document.querySelectorAll("#filters input[type=checkbox]")) cb.checked = false;
     render();
-  });
+  }
+  $("#clear-filters").addEventListener("click", clearFilters);
+  // The results line offers Clear too: on phones the filter panel starts collapsed.
+  $("#result-count").addEventListener("click", (e) => { if (e.target.closest("[data-clear]")) clearFilters(); });
   $("#filters-btn").addEventListener("click", () => {
     const open = $("#filters").classList.toggle("open");
     $("#filters-btn").setAttribute("aria-expanded", String(open));
@@ -175,11 +208,17 @@
     $("#grid").innerHTML = html;
     $("#empty").hidden = visible.length > 0;
     const total = data.projects.length;
-    $("#result-count").textContent = visible.length === total ? `${total} projects` : `${visible.length} of ${total} projects`;
-    const filtered = state.kinds.size || state.langs.size || state.tags.size || state.q;
+    const active = state.kinds.size + state.langs.size + state.tags.size;
+    const filtered = active > 0 || state.q.trim() !== "";
+    $("#result-count").innerHTML = filtered
+      ? `${visible.length} of ${total} projects · <button type="button" class="link-btn" data-clear>Clear filters</button>`
+      : `${total} projects`;
     $("#clear-filters").hidden = !filtered;
+    $("#filters-btn").textContent = active ? `Filters (${active})` : "Filters";
     renderTagFilters();
     for (const cb of document.querySelectorAll('#filters input[name="kind"]')) cb.checked = state.kinds.has(cb.value);
+    for (const cb of document.querySelectorAll('#filters input[name="lang"]')) cb.checked = state.langs.has(cb.value);
+    writeUrl();
   }
 
   $("#grid").addEventListener("click", (e) => {
@@ -300,6 +339,9 @@
   }
 
   // ------------------------------------------------------------------ boot
+  readUrl();
+  $("#search").value = state.q;
+  $("#sort").value = state.sort;
   renderStats();
   renderLangFilters();
   render();

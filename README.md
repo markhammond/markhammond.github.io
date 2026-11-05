@@ -30,6 +30,17 @@ are shown instead.
 In the repo's Settings → Pages, set **Source** to **GitHub Actions**. The workflow then deploys on every push,
 and once a day so the numbers stay fresh.
 
+## Linking to a filtered view
+
+Filters are kept in the address, so any filtered view can be shared:
+
+- `?tag=entitlements`: projects tagged entitlements
+- `?tag=sql,entitlements&kind=library`: libraries with both tags
+- `?lang=TypeScript`, `?kind=sample`, `?q=stream`
+
+Lists are comma-separated and case-insensitive; values that match nothing are ignored. A project's
+detail view can be added too, e.g. `?tag=entitlements#/p/chalkql`.
+
 ## Adding a project
 
 Add an entry to `data/projects.js`. A sample of another project takes `parent` (that project's `id`) and `path`
