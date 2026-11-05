@@ -53,7 +53,7 @@ window.SHOWCASE = {
         "Zero allocations per frame in steady state",
         "Transports: Blazor Server circuits and MagicOnion (gRPC)",
       ],
-      cover: "assets/img/tapline-blazor_realtime.webp",
+      cover: "assets/img/tapline-blazor_realtime.avif",
       screenshot: true,
       language: "C#",
       license: "ELv2",
