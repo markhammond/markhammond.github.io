@@ -3,6 +3,8 @@
 
   const data = window.SHOWCASE;
   const OWNER = data.owner;
+  // Star counts are hidden for now; set to true to show them on cards and in detail views.
+  const SHOW_STARS = false;
   const LANG_COLORS = { "C#": "#178600", TypeScript: "#3178c6", JavaScript: "#f1e05a", Python: "#3572A5", Rust: "#dea584" };
   const byId = Object.fromEntries(data.projects.map((p) => [p.id, p]));
 
@@ -135,7 +137,7 @@
     const meta = p.parent
       ? `${lang}<span>Sample of&nbsp;<a class="parent-link" href="#/p/${esc(p.parent)}">${esc(byId[p.parent].title)}</a></span>`
       : `${lang}${pkg}<span title="Last push">${esc(fmtDate(p.updated))}</span>`;
-    const stars = p.parent ? "" : `<span title="GitHub stars">${ICON.star}${starsOf(p)}</span>`;
+    const stars = p.parent || !SHOW_STARS ? "" : `<span title="GitHub stars">${ICON.star}${starsOf(p)}</span>`;
     const tags = (p.tags || []).slice(0, 4)
       .map((t) => `<button type="button" class="tag" data-tag="${esc(t)}" aria-pressed="${state.tags.has(t)}">${esc(t)}</button>`).join("");
     const badges = p.parent ? `<div class="badges"><span class="badge badge-sample">Tapline sample</span></div>` : "";
@@ -196,7 +198,7 @@
       ["Licence", p.license],
       p.requires && ["Requires", p.requires],
       p.package && ["Package", `<a href="${esc(pkgUrl(p.package))}" target="_blank" rel="noopener">${esc(p.package.id)}</a> v${esc(p.package.version)}`],
-      !p.parent && ["Stars", String(starsOf(p))],
+      SHOW_STARS && !p.parent && ["Stars", String(starsOf(p))],
       !p.parent && ["Last push", fmtDate(p.updated)],
       parent && ["Part of", `<a href="#/p/${esc(parent.id)}">${esc(parent.title)}</a>`],
     ].filter(Boolean);

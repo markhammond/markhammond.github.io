@@ -7,7 +7,7 @@ window.SHOWCASE = {
   owner: "markhammond",
   name: "Mark Hammond",
   tagline:
-    "Open-source building blocks for real-time data, safe SQL, time-series and low-latency .NET.",
+    "Building blocks for streaming real-time data, safe SQL, time-series viewing, forecasting, and low-latency .NET primitives.",
   projects: [
     {
       id: "chalkql",
