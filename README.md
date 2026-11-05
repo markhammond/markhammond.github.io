@@ -28,7 +28,8 @@ are shown instead.
 ## Publishing
 
 In the repo's Settings → Pages, set **Source** to **GitHub Actions**. The workflow then deploys on every push,
-and once a day so the numbers stay fresh.
+and once a day so the numbers stay fresh. Each deploy stamps the page's links to `styles.css`, `app.js` and `projects.js`
+with the commit (`?v=abc1234`), so a freshly loaded page never mixes in files browsers cached from the previous deploy.
 
 ## Linking to a filtered view
 

@@ -28,6 +28,15 @@ jobs:
         run: node scripts/build-live.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Pages lets browsers cache files for 10 minutes. Stamping the page's links with
+      # the commit makes a freshly loaded page fetch this deploy's script, styles and
+      # data instead of mixing in cached copies from the previous one.
+      - name: Version-stamp asset links
+        run: |
+          v="${GITHUB_SHA::7}"
+          sed -i -E "s#(href|src)=\"(assets/styles\.css|assets/app\.js|data/projects\.js)\"#\1=\"\2?v=${v}\"#g" index.html
+          grep -E "\?v=${v}" index.html
+          test "$(grep -c "?v=${v}" index.html)" -eq 3
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
