@@ -75,7 +75,7 @@ window.SHOWCASE = {
       parent: "tapline",
       repo: "tapline",
       path: "samples/BlazorRealtime.Sample",
-      title: "BlazorRealtime",
+      title: "Blazor Real-Time",
       kicker: "Animation synchronised to streaming music.",
       summary:
         "A field of ridge lines moving to music, 60 frames a second over one Blazor circuit — the music plays on even when the link is capped.",
@@ -107,7 +107,7 @@ window.SHOWCASE = {
       parent: "tapline",
       repo: "tapline",
       path: "samples/PivotTable.Sample",
-      title: "PivotTable",
+      title: "Pivot Table",
       kicker: "A live position viewer using idiomatic SQL.",
       summary:
         "A brokerage's risk and hedges by client, region, channel, instrument and venue — pivoted live, valued at the marks, with realised and unrealised PnL.",
@@ -122,7 +122,7 @@ window.SHOWCASE = {
       parent: "tapline",
       repo: "tapline",
       path: "samples/LiveGrid.Sample",
-      title: "LiveGrid",
+      title: "Live Grid",
       kicker: "A streaming virtual blotter with alerts, bolted onto PostgreSQL.",
       summary:
         "A trade blotter over a million orders and their fills: scroll, sort and filter everything while the house keeps trading.",
@@ -137,7 +137,7 @@ window.SHOWCASE = {
       parent: "tapline",
       repo: "tapline",
       path: "samples/ActivityFeed.Sample",
-      title: "ActivityFeed",
+      title: "Activity Feed",
       kicker: "Privacy-preserving feeds.",
       summary:
         "A medical practice streams bookings, check-ins and calls to a room to everyone in it — each feed shaped by need-to-know access rules.",
@@ -152,7 +152,7 @@ window.SHOWCASE = {
       parent: "tapline",
       repo: "tapline",
       path: "samples/SignIn.Sample",
-      title: "SecureSignIn",
+      title: "Secure Sign-In",
       kicker: "Passkeys, and passwords the server never sees.",
       summary:
         "Sign in to a Tapline router from a Blazor page with a passkey or a password (OPAQUE, RFC 9807), and reach a service that serves only the signed in.",

@@ -149,7 +149,9 @@
     if (state.tags.size && ![...state.tags].every((t) => (p.tags || []).includes(t))) return false;
     const q = state.q.trim().toLowerCase();
     if (q) {
-      const hay = [p.title, p.kicker, p.summary, p.repo, ...(p.tags || [])].join(" ").toLowerCase();
+      // `path` lets the code's names (e.g. "LiveGrid", from samples/LiveGrid.Sample) find
+      // samples whose titles are spaced out.
+      const hay = [p.title, p.kicker, p.summary, p.repo, p.path, ...(p.tags || [])].join(" ").toLowerCase();
       if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
     }
     return true;
