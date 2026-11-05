@@ -9,10 +9,26 @@ Plain static HTML, CSS and JS; no build step.
 |---|---|
 | `index.html` | the page |
 | `data/projects.js` | the projects, in the curated order shown on the page |
-| `assets/app.js` | filtering, search, sort, detail dialog; refreshes stars, last push and package versions live from GitHub, NuGet and npm |
+| `assets/app.js` | filtering, search, sort, detail dialog; applies `data/live.json` when present |
+| `scripts/build-live.mjs` | writes `data/live.json` (stars, last push, NuGet/npm versions) at deploy time |
+| `.github/workflows/pages.yml` | builds the snapshot and deploys, on every push to `main` and daily |
 | `assets/styles.css` | light and dark themes |
 | `assets/covers/` | generated cover art for projects without a screenshot (`python3 scripts/make_covers.py assets/covers`) |
 | `assets/img/` | screenshots from the project repos, resized to 1200px WebP |
+| `assets/fonts/` | self-hosted Inter and JetBrains Mono |
+
+## No third-party calls from the browser
+
+Stars, last push dates and package versions are fetched once per deploy by the workflow, using its own
+`GITHUB_TOKEN`, and served from the site as `data/live.json`. Visitors' browsers only ever talk to
+`markhammond.github.io`: no GitHub API rate limit to share behind a corporate proxy, nothing for a proxy to
+block, and no fonts or avatars from other hosts. If the snapshot is missing, the values in `data/projects.js`
+are shown instead.
+
+## Publishing
+
+In the repo's Settings → Pages, set **Source** to **GitHub Actions**. The workflow then deploys on every push,
+and once a day so the numbers stay fresh.
 
 ## Adding a project
 
@@ -22,6 +38,7 @@ Add an entry to `data/projects.js`. A sample of another project takes `parent` (
 ## Running locally
 
 ```bash
+GITHUB_TOKEN=$(gh auth token) node scripts/build-live.mjs   # optional: the live numbers
 python3 -m http.server 8765
 ```
 

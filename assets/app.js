@@ -271,32 +271,26 @@
   });
 
   // ------------------------------------------------------------------ live data
-  // Stars and last-push dates from GitHub, package versions from NuGet / npm.
-  // Everything degrades to the values baked into data/projects.js.
+  // Stars, last-push dates and package versions come from data/live.json, a
+  // snapshot written at deploy time by scripts/build-live.mjs. It is served from
+  // this site, so no visitor's browser calls GitHub, NuGet or npm. If it is
+  // missing (local preview, failed build) the values in data/projects.js stand.
   async function refresh() {
-    const libs = data.projects.filter((p) => p.kind === "library");
-    const jobs = [
-      fetch(`https://api.github.com/users/${OWNER}/repos?per_page=100&type=owner`)
-        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-        .then((repos) => {
-          const m = Object.fromEntries(repos.map((r) => [r.name.toLowerCase(), r]));
-          for (const p of libs) {
-            const r = m[p.repo.toLowerCase()];
-            if (r) { p.stars = r.stargazers_count; p.updated = r.pushed_at; }
-          }
-        }),
-      ...libs.filter((p) => p.package).map((p) => {
-        const { registry, id } = p.package;
-        const url = registry === "npm"
-          ? `https://registry.npmjs.org/${encodeURIComponent(id)}/latest`
-          : `https://api.nuget.org/v3-flatcontainer/${id.toLowerCase()}/index.json`;
-        return fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j) => {
-          const v = registry === "npm" ? j.version : (j.versions || []).filter((x) => !x.includes("-")).pop();
-          if (v) p.package.version = v;
-        });
-      }),
-    ];
-    await Promise.allSettled(jobs);
+    let live;
+    try {
+      const r = await fetch("data/live.json", { cache: "no-cache" });
+      if (!r.ok) return;
+      live = await r.json();
+    } catch (e) {
+      return;
+    }
+    for (const p of data.projects) {
+      if (p.kind !== "library") continue;
+      const repo = live.repos?.[p.repo];
+      if (repo) { p.stars = repo.stars; p.updated = repo.pushed; }
+      const v = p.package && live.packages?.[`${p.package.registry}:${p.package.id}`];
+      if (v) p.package.version = v;
+    }
     renderStats();
     render();
     if (dialog.open && location.hash.startsWith("#/p/")) openDetail(decodeURIComponent(location.hash.slice(4)));
