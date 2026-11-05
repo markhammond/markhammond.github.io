@@ -81,7 +81,7 @@ window.SHOWCASE = {
         "A field of ridge lines moving to music, 60 frames a second over one Blazor circuit — the music plays on even when the link is capped.",
       description:
         "The server plays a MIDI arrangement and computes a field of ridge lines that moves to it, encoded once for every viewer. Notes ride a high-priority lane and the browser plays them; the ridges fill what bandwidth is left, blended so the motion stays smooth however few frames get through.",
-      cover: "assets/img/tapline-waveform.webp",
+      cover: "assets/img/tapline-blazor-realtime-amber.avif",
       screenshot: false,
       tags: ["blazor", "realtime", "audio", "priority-lanes"],
       run: "dotnet run -c Release --project samples/BlazorRealtime.Sample",
@@ -148,18 +148,18 @@ window.SHOWCASE = {
       run: "dotnet run --project samples/ActivityFeed.Sample",
     },
     {
-      id: "tapline-sign-in",
+      id: "tapline-secure-sign-in",
       parent: "tapline",
       repo: "tapline",
       path: "samples/SignIn.Sample",
-      title: "SignIn",
-      kicker: "Passkeys and OPAQUE as pluggable authentication.",
+      title: "SecureSignIn",
+      kicker: "Passkeys, and passwords the server never sees.",
       summary:
         "Sign in to a Tapline router from a Blazor page with a passkey or a password (OPAQUE, RFC 9807), and reach a service that serves only the signed in.",
       description:
         "Illustrative only: password sign-in uses opaque-ke through Tapline.Authentication.Opaque. Shows how authentication modules plug into the router and how providers can refuse anonymous connections.",
       cover: "assets/img/tapline-sign_in.webp",
-      tags: ["passkeys", "opaque", "authentication"],
+      tags: ["security", "passkeys", "opaque", "authentication"],
       run: "dotnet run --project samples/SignIn.Sample",
     },
 

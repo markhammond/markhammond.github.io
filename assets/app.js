@@ -205,7 +205,7 @@
     const pkgLink = p.package ? `<a class="secondary" href="${esc(pkgUrl(p.package))}" target="_blank" rel="noopener">${p.package.registry === "npm" ? "npm" : "NuGet"}</a>` : "";
     return `
       <button class="icon-btn detail-close" type="button" data-close aria-label="Close">${ICON.close}</button>
-      <div class="detail-cover${p.screenshot ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt=""></div>
+      <div class="detail-hero"><div class="detail-cover${p.screenshot ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt=""></div></div>
       <div class="detail-main">
         <div>
           <h2 id="detail-title">${esc(p.title)}</h2>

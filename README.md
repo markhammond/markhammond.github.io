@@ -14,7 +14,7 @@ Plain static HTML, CSS and JS; no build step.
 | `.github/workflows/pages.yml` | builds the snapshot and deploys, on every push to `main` and daily |
 | `assets/styles.css` | light and dark themes |
 | `assets/covers/` | generated cover art for projects without a screenshot (`python3 scripts/make_covers.py assets/covers`) |
-| `assets/img/` | screenshots from the project repos, resized to 1200px WebP with their colour profiles kept (`cwebp -metadata icc`), so Display P3 and HDR screenshots render correctly |
+| `assets/img/` | screenshots from the project repos, resized to 1200px WebP with their colour profiles kept (`cwebp -metadata icc`), so Display P3 and HDR screenshots render correctly. The BlazorRealtime cover is an AVIF with an HDR gain map (SDR everywhere, brighter on HDR displays), made by `scripts/crop-hdr-screenshot.swift` and `avifgainmaputil` |
 | `assets/fonts/` | self-hosted Inter and JetBrains Mono |
 
 ## No third-party calls from the browser
