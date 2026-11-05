@@ -1,6 +1,8 @@
 // Showcase data. Order here is the "Curated" sort order on the page.
 // `repo` is the GitHub repo name under OWNER; stars and dates are refreshed live
-// from the GitHub API on page load, the values here are only the fallback.
+// from data/live.json (built at deploy time); the values here are only the fallback.
+// `screenshot: true` shows a cover whole (letterboxed) instead of cropped to fill;
+// samples default to true.
 window.SHOWCASE = {
   owner: "markhammond",
   name: "Mark Hammond",
@@ -51,7 +53,8 @@ window.SHOWCASE = {
         "Zero allocations per frame in steady state",
         "Transports: Blazor Server circuits and MagicOnion (gRPC)",
       ],
-      cover: "assets/img/tapline-waveform.webp",
+      cover: "assets/img/tapline-blazor_realtime.webp",
+      screenshot: true,
       language: "C#",
       license: "ELv2",
       tags: ["realtime", "streaming", "pubsub", "blazor", "backpressure", "dotnet"],
@@ -78,7 +81,8 @@ window.SHOWCASE = {
         "A field of ridge lines moving to music, 60 frames a second over one Blazor circuit — the music plays on even when the link is capped.",
       description:
         "The server plays a MIDI arrangement and computes a field of ridge lines that moves to it, encoded once for every viewer. Notes ride a high-priority lane and the browser plays them; the ridges fill what bandwidth is left, blended so the motion stays smooth however few frames get through.",
-      cover: "assets/img/tapline-blazor_realtime.webp",
+      cover: "assets/img/tapline-waveform.webp",
+      screenshot: false,
       tags: ["blazor", "realtime", "audio", "priority-lanes"],
       run: "dotnet run -c Release --project samples/BlazorRealtime.Sample",
       license: "CC BY-NC-SA 4.0",

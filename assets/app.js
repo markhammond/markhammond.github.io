@@ -9,6 +9,7 @@
   // Samples inherit language/licence/package from their parent library.
   for (const p of data.projects) {
     p.kind = p.parent ? "sample" : "library";
+    p.screenshot ??= !!p.parent;
     if (p.parent) {
       const parent = byId[p.parent];
       p.language ??= parent.language;
@@ -139,7 +140,7 @@
       .map((t) => `<button type="button" class="tag" data-tag="${esc(t)}" aria-pressed="${state.tags.has(t)}">${esc(t)}</button>`).join("");
     const badges = p.parent ? `<div class="badges"><span class="badge badge-sample">Tapline sample</span></div>` : "";
     return `<article class="card" data-id="${esc(p.id)}">
-      <div class="card-cover${p.parent ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt="" loading="lazy" decoding="async"></div>
+      <div class="card-cover${p.screenshot ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt="" loading="lazy" decoding="async"></div>
       <div class="card-body">
         ${badges}
         <div class="card-head">
@@ -204,7 +205,7 @@
     const pkgLink = p.package ? `<a class="secondary" href="${esc(pkgUrl(p.package))}" target="_blank" rel="noopener">${p.package.registry === "npm" ? "npm" : "NuGet"}</a>` : "";
     return `
       <button class="icon-btn detail-close" type="button" data-close aria-label="Close">${ICON.close}</button>
-      <div class="detail-cover${p.parent ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt=""></div>
+      <div class="detail-cover${p.screenshot ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt=""></div>
       <div class="detail-main">
         <div>
           <h2 id="detail-title">${esc(p.title)}</h2>
