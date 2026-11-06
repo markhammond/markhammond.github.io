@@ -21,6 +21,8 @@
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  // Escapes, then shows `backticked` names (types, APIs) as code, as in Markdown.
+  const inlineCode = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
   const repoUrl = (p) => `https://github.com/${OWNER}/${p.repo}` + (p.path ? `/tree/HEAD/${p.path}` : "");
   const pkgUrl = (pkg) => (pkg.registry === "npm" ? `https://www.npmjs.com/package/${pkg.id}` : `https://www.nuget.org/packages/${pkg.id}`);
   const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
@@ -254,7 +256,7 @@
           <h2 id="detail-title">${esc(p.title)}</h2>
           <p class="kicker">${esc(p.kicker)}</p>
           <p>${esc(p.description || p.summary)}</p>
-          ${p.highlights ? `<h3>Highlights</h3><ul>${p.highlights.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
+          ${p.highlights ? `<h3>Highlights</h3><ul>${p.highlights.map((h) => `<li>${inlineCode(h)}</li>`).join("")}</ul>` : ""}
           ${cmd ? `<h3>${p.run ? "Run it (from a clone of the repo)" : "Install"}</h3>
             <div class="code"><code>${esc(cmd)}</code><button class="copy" type="button" data-copy="${esc(cmd)}">Copy</button></div>` : ""}
           ${samples.length ? `<h3>Samples</h3><div class="sample-strip">${samples.map((s) => `<a href="#/p/${esc(s.id)}"><img src="${esc(s.cover)}" alt="" loading="lazy">${esc(s.title)}</a>`).join("")}</div>` : ""}

@@ -2,7 +2,7 @@
 // `repo` is the GitHub repo name under OWNER; stars and dates are refreshed live
 // from data/live.json (built at deploy time); the values here are only the fallback.
 // `screenshot: true` shows a cover whole (letterboxed) instead of cropped to fill;
-// samples default to true.
+// samples default to true. In `highlights`, `backticks` mark type and API names (shown as code).
 window.SHOWCASE = {
   owner: "markhammond",
   name: "Mark Hammond",
@@ -223,10 +223,10 @@ window.SHOWCASE = {
       description:
         "Frozen collections are built once and then only read; Semifreddo collections are half-cold — never changed in place, yet every change returns a new version that shares almost all of its structure with the old one. A small set of collections, each built to be fast and to allocate predictably.",
       highlights: [
-        "ImmVector and ImmFlexVector (RRB: fast concat, split, insert)",
-        "ImmMap, ImmSet (HAMT) and insertion-ordered ImmOrderedMap",
-        "ImmDag with incremental Pearce–Kelly topological orders",
-        "Deferred payload reclamation for DAGs (RetiringDag)",
+        "`ImmVector` and `ImmFlexVector` (RRB: fast concat, split, insert)",
+        "`ImmMap`, `ImmSet` (HAMT) and insertion-ordered `ImmOrderedMap`",
+        "`ImmDag` with incremental Pearce–Kelly topological sorting",
+        "Deferred payload reclamation for DAGs (`RetiringDag`)",
         "Transients for batch edits, zero-allocation enumeration, AOT-friendly",
       ],
       cover: "assets/covers/semifreddo.svg",
