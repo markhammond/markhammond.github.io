@@ -26,7 +26,6 @@ window.SHOWCASE = {
         "Separate catalogues per sovereign zone, so no query crosses one by construction",
       ],
       cover: "assets/covers/chalkql.svg",
-      gallery: ["assets/img/chalkql-virtual-blotter.webp"],
       language: "C#",
       license: "ELv2",
       tags: ["sql", "entitlements", "query-engine", "access-control", "apache-calcite", "dotnet", "data-platform", "chalkql"],
@@ -36,6 +35,73 @@ window.SHOWCASE = {
       links: [{ label: "Tutorial", href: "https://github.com/markhammond/chalkql/blob/HEAD/docs/tutorial.md" }],
       stars: 0,
       updated: "2026-10-30",
+    },
+
+    // ---- ChalkQL samples: shown as projects of their own, linked to the parent
+    {
+      id: "chalkql-blotter",
+      parent: "chalkql",
+      repo: "chalkql",
+      path: "dotnet/samples/Chalk.Sample.Blotter",
+      title: "Virtual Blotter",
+      kicker: "An unobtrusive live grid.",
+      summary:
+        "A Blazor QuickGrid trade blotter over five million orders and their fills in PostgreSQL: scroll, sort and filter every row while the house keeps trading.",
+      description:
+        "The host keeps no copy of the corpus. ChalkQL pushes each tab's filter, sort, keyset seek and limit into PostgreSQL, reads the database and the rows the streams have just sent in one statement, and keeps every tab and filter in use current as an incrementally maintained standing view, all within a memory budget of a few megabytes.",
+      cover: "assets/img/chalkql-virtual-blotter.webp",
+      tags: ["data-grid", "postgresql", "standing-views", "blazor", "chalkql"],
+      run: "dotnet run -c Release --project dotnet/samples/Chalk.Sample.Blotter",
+    },
+    {
+      id: "chalkql-quickstart",
+      parent: "chalkql",
+      repo: "chalkql",
+      path: "dotnet/samples/Chalk.Sample.Quickstart",
+      title: "Quickstart",
+      kicker: "The guide's first program, runnable.",
+      summary:
+        "Twenty days of currency rates as an in-memory table, queried with positional, named and list parameters, and an ORDER BY that costs nothing.",
+      description:
+        "A list of records becomes a table with a declared order and unique key. The program starts its own planner sidecar, prepares and runs statements, and prints the plan for ORDER BY ts, which has no Sort because the host declared the order. It is the guide's quickstart verbatim, so the build runs what the documentation promises.",
+      cover: "assets/covers/chalkql-quickstart.svg",
+      screenshot: false,
+      tags: ["getting-started", "parameters", "poco", "collation", "chalkql"],
+      run: "dotnet run --project dotnet/samples/Chalk.Sample.Quickstart",
+      links: [{ label: "Guide", href: "https://github.com/markhammond/chalkql/blob/HEAD/docs/guide.md#quickstart" }],
+    },
+    {
+      id: "chalkql-tutorial",
+      parent: "chalkql",
+      repo: "chalkql",
+      path: "dotnet/samples/Chalk.Sample.Tutorial",
+      title: "Tutorial",
+      kicker: "Nineteen chapters, every output real.",
+      summary:
+        "A marketplace of customers, suppliers, orders and rates in nineteen small programs, from a list as a table to entitlements, live pivots and incremental views.",
+      description:
+        "Each chapter prints what it does, the SQL it runs, the plan where the plan is the point, and the result. The written tutorial quotes this program's output, and a script checks every block against a fresh run, so no number in it goes stale. Pass a chapter's number to run it alone.",
+      cover: "assets/covers/chalkql-tutorial.svg",
+      screenshot: false,
+      tags: ["tutorial", "entitlements", "federation", "incremental-views", "duckdb", "sqlite", "chalkql"],
+      run: "dotnet run --project dotnet/samples/Chalk.Sample.Tutorial",
+      links: [{ label: "Tutorial", href: "https://github.com/markhammond/chalkql/blob/HEAD/docs/tutorial.md" }],
+    },
+    {
+      id: "chalkql-akade-indexedset",
+      parent: "chalkql",
+      repo: "chalkql",
+      path: "dotnet/samples/Chalk.Sample.AkadeIndexedSet",
+      title: "Akade.IndexedSet Source",
+      kicker: "A third-party index library as a first-class source.",
+      summary:
+        "Akade.IndexedSet's hash and ordered indexes, used by ChalkQL's planner: an equality becomes an index lookup that scans 2 rows of 10,004.",
+      description:
+        "One IndexedSet becomes one source and one table, with its indexes found rather than registered by hand. The planner turns equality and range predicates into lookups, keeps a filter for what no index covers, and sees the host's own changes once the table is refreshed, transactional appends included.",
+      cover: "assets/covers/chalkql-akade-indexedset.svg",
+      screenshot: false,
+      tags: ["custom-source", "indexes", "pushdown", "poco", "chalkql"],
+      run: "dotnet run --project dotnet/samples/Chalk.Sample.AkadeIndexedSet",
     },
     {
       id: "tapline",
@@ -57,7 +123,7 @@ window.SHOWCASE = {
       screenshot: true,
       language: "C#",
       license: "ELv2",
-      tags: ["realtime", "streaming", "pubsub", "blazor", "backpressure", "dotnet"],
+      tags: ["realtime", "streaming", "pubsub", "blazor", "backpressure", "dotnet", "tapline"],
       package: { registry: "nuget", id: "Tapline", version: "0.2.0" },
       install: "dotnet add package Tapline",
       requires: ".NET 10",
@@ -83,7 +149,7 @@ window.SHOWCASE = {
         "The server plays a MIDI arrangement and computes a field of ridge lines that moves to it, encoded once for every viewer. Notes ride a high-priority lane and the browser plays them; the ridges fill what bandwidth is left, blended so the motion stays smooth however few frames get through.",
       cover: "assets/img/tapline-blazor-realtime-amber.avif",
       screenshot: false,
-      tags: ["blazor", "realtime", "audio", "priority-lanes"],
+      tags: ["blazor", "realtime", "audio", "priority-lanes", "tapline"],
       run: "dotnet run -c Release --project samples/BlazorRealtime.Sample",
       license: "CC BY-NC-SA 4.0",
     },
@@ -99,7 +165,7 @@ window.SHOWCASE = {
       description:
         "A feed handler builds the book from a venue's depth and trade feeds, a Tapline data provider offers it as topics, and the router streams each client the levels that changed since it last heard — fixed-width binary records, checksummed end to end. The sample's README follows a level change from venue to screen, with the cost of each step.",
       cover: "assets/img/tapline-blazing_order_books.webp",
-      tags: ["order-book", "conflation", "blazor", "market-data"],
+      tags: ["order-book", "conflation", "blazor", "market-data", "tapline"],
       run: "dotnet run --project samples/BlazingOrderBooks.Sample",
     },
     {
@@ -114,7 +180,7 @@ window.SHOWCASE = {
       description:
         "Simulated clients trade linear perpetuals against the house, which nets risk and hedges the residual on external venues. Drag fields to reshape it: the page writes the SQL, ChalkQL keeps it current as a standing view, and Tapline streams the cells that change.",
       cover: "assets/img/tapline-live_positions.webp",
-      tags: ["pivot", "sql", "chalkql", "pnl"],
+      tags: ["pivot", "sql", "chalkql", "pnl", "tapline"],
       run: "dotnet run --project samples/PivotTable.Sample",
     },
     {
@@ -129,7 +195,7 @@ window.SHOWCASE = {
       description:
         "The server maintains each reader's window; Tapline carries it to the browser as binary rows, only what changed, conflated to the reader's link; the page draws the rows itself. Warm, a grid's session allocates nothing on an answer's way to the wire, and each session works within a 64 MB budget.",
       cover: "assets/img/tapline-live_grid.webp",
-      tags: ["data-grid", "postgresql", "alerts", "chalkql"],
+      tags: ["data-grid", "postgresql", "alerts", "chalkql", "tapline"],
       run: "dotnet run --project samples/LiveGrid.Sample",
     },
     {
@@ -144,7 +210,7 @@ window.SHOWCASE = {
       description:
         "Reception, each GP, the practice manager, each patient and carer, and each waiting-room screen sees the same activity from their own perspective. Each person's feed is theirs alone.",
       cover: "assets/img/tapline-activity_feeds.webp",
-      tags: ["activity-feed", "privacy", "entitlements", "access-control"],
+      tags: ["activity-feed", "privacy", "entitlements", "access-control", "tapline"],
       run: "dotnet run --project samples/ActivityFeed.Sample",
     },
     {
@@ -159,7 +225,7 @@ window.SHOWCASE = {
       description:
         "Illustrative only: password sign-in uses opaque-ke through Tapline.Authentication.Opaque. Shows how authentication modules plug into the router and how providers can refuse anonymous connections.",
       cover: "assets/img/tapline-sign_in.webp",
-      tags: ["security", "passkeys", "opaque", "authentication"],
+      tags: ["security", "passkeys", "opaque", "authentication", "tapline"],
       run: "dotnet run --project samples/SignIn.Sample",
     },
 

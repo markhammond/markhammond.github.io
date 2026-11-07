@@ -80,7 +80,7 @@
     const langs = new Set(libs.map((p) => p.language));
     const items = [
       [libs.length, libs.length === 1 ? "library" : "libraries"],
-      [samples.length, "Tapline samples"],
+      [samples.length, samples.length === 1 ? "sample" : "samples"],
       [libs.filter((p) => p.package).length, "published packages"],
       [langs.size, langs.size === 1 ? "language" : "languages"],
       [stars, stars === 1 ? "star" : "stars"],
@@ -177,7 +177,7 @@
     const stars = p.parent || !SHOW_STARS ? "" : `<span title="GitHub stars">${ICON.star}${starsOf(p)}</span>`;
     const tags = (p.tags || []).slice(0, 4)
       .map((t) => `<button type="button" class="tag" data-tag="${esc(t)}" aria-pressed="${state.tags.has(t)}">${esc(t)}</button>`).join("");
-    const badges = p.parent ? `<div class="badges"><span class="badge badge-sample">Tapline sample</span></div>` : "";
+    const badges = p.parent ? `<div class="badges"><span class="badge badge-sample">${esc(byId[p.parent].title)} sample</span></div>` : "";
     return `<article class="card" data-id="${esc(p.id)}">
       <div class="card-cover${p.screenshot ? " screenshot" : ""}"><img src="${esc(p.cover)}" alt="" loading="lazy" decoding="async"></div>
       <div class="card-body">
@@ -205,10 +205,14 @@
     const libs = sorted.filter((p) => p.kind === "library");
     const samples = sorted.filter((p) => p.kind === "sample");
     let html = libs.map(card).join("");
-    if (samples.length) {
-      html += `<h2 class="section-label" id="samples">Tapline samples <span>Runnable apps from the Tapline repo, each a project of its own</span></h2>`;
-      html += samples.map(card).join("");
-    }
+    // One section per parent library, in the libraries' order; the first carries the #samples anchor.
+    const parents = [...new Set(samples.map((p) => p.parent))]
+      .sort((a, b) => data.projects.indexOf(byId[a]) - data.projects.indexOf(byId[b]));
+    parents.forEach((id, i) => {
+      const title = esc(byId[id].title);
+      html += `<h2 class="section-label"${i ? "" : ' id="samples"'}>${title} samples <span>Runnable programs from the ${title} repo, each a project of its own</span></h2>`;
+      html += samples.filter((p) => p.parent === id).map(card).join("");
+    });
     $("#grid").innerHTML = html;
     $("#empty").hidden = visible.length > 0;
     const total = data.projects.length;

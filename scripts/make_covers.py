@@ -306,6 +306,92 @@ def timerwheel():
     write("timerwheel.svg", svg("".join(body), bg))
 
 
-for fn in (chalkql, mip_chart, tsfm, semifreddo, heartbeat, timerwheel):
+# ------------------------------------------------- chalkql samples (chalkboard family)
+CB_BG, CB_CHALK, CB_DIM, CB_ADD = "#1f2b26", "#e8efe9", "#93a59b", "#9ef0b8"
+
+
+def chalk_dust(seed, n=110):
+    rnd = random.Random(seed)
+    dots = "".join(f'<circle cx="{rnd.uniform(0, W):.0f}" cy="{rnd.uniform(0, H):.0f}" r="{rnd.uniform(1, 5):.1f}"/>'
+                   for _ in range(n))
+    return f'<g opacity="0.06" fill="#fff">{dots}</g>'
+
+
+def esc_xml(t):
+    return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def board(seed, lines, x=110, y=170, size=30, step=56, frame=True):
+    """Lines of (mark, text, colour); mark "+" highlights the line."""
+    body = [chalk_dust(seed)]
+    if frame:
+        body.append(f'<rect x="70" y="80" width="1060" height="590" rx="18" fill="none" stroke="{CB_DIM}" '
+                    f'stroke-opacity="0.35" stroke-width="2"/>')
+    for mark, text, color in lines:
+        if mark:
+            body.append(f'<rect x="{x - 20}" y="{y - size - 6}" width="{1110 - x}" height="{size + 22}" rx="8" '
+                        f'fill="{CB_ADD}" fill-opacity="0.10"/>')
+        body.append(f'<text x="{x}" y="{y}" font-family="{MONO}" font-size="{size}" fill="{color}" '
+                    f'xml:space="preserve">{esc_xml(text)}</text>')
+        y += step
+    return body
+
+
+# Real output of `dotnet run --project dotnet/samples/Chalk.Sample.Quickstart` (lines trimmed to fit).
+def chalkql_quickstart():
+    lines = [
+        ("", "$ dotnet run", CB_DIM),
+        ("", "planner 0.1.0 on Calcite 1.43.0", CB_CHALK),
+        ("", "plan fc742d6efcd8d815: currency, ts, rate", CB_CHALK),
+        ("", "positional: 8 rows, 20 scanned", CB_CHALK),
+        ("", "named + list: 20 rows, 20 scanned", CB_CHALK),
+        ("", "ORDER BY ts plan:", CB_CHALK),
+        ("", "  Project [$0, $1]", CB_CHALK),
+        ("+", "    Read mem.main.usd_rates", CB_ADD),
+        ("", "/* no Sort: the host declared the order */", CB_DIM),
+    ]
+    write("chalkql-quickstart.svg", svg("".join(board(11, lines, y=160, step=58)), CB_BG))
+
+
+def chalkql_tutorial():
+    chapters = [
+        "A list is a table", "What the planner did", "Two sources, one query", "Strings without allocation",
+        "Time series", "Your functions", "One table, many places", "Parameters", "When the source cannot",
+        "Who's asking", "Through the parent", "Through the lines", "Replanning", "Planning on a budget",
+        "Live pivot", "Streaming live pivot", "Temporal live pivot", "Runtime policy", "Incremental views",
+    ]
+    body = [chalk_dust(19)]
+    body.append(f'<text x="100" y="128" font-family="{MONO}" font-size="40" fill="{CB_CHALK}">Contents</text>')
+    body.append(f'<path d="M100 150H1100" stroke="{CB_DIM}" stroke-opacity="0.5" stroke-width="2"/>')
+    for i, title in enumerate(chapters):
+        col, row = divmod(i, 10)
+        x, y = 100 + col * 520, 205 + row * 52
+        hot = title in ("Who's asking", "Live pivot", "Incremental views")
+        num_c = CB_ADD if hot else CB_DIM
+        body.append(f'<text x="{x}" y="{y}" font-family="{MONO}" font-size="26" fill="{num_c}" '
+                    f'xml:space="preserve">{i + 1:>2}</text>')
+        body.append(f'<text x="{x + 56}" y="{y}" font-family="{MONO}" font-size="26" '
+                    f'fill="{CB_ADD if hot else CB_CHALK}">{esc_xml(title)}</text>')
+    write("chalkql-tutorial.svg", svg("".join(body), CB_BG))
+
+
+# Real output of `dotnet run --project dotnet/samples/Chalk.Sample.AkadeIndexedSet` (trimmed).
+def chalkql_akade():
+    lines = [
+        ("", "SELECT id, amount FROM purchases", CB_CHALK),
+        ("", "WHERE  product_id = ?", CB_CHALK),
+        ("+", "IndexLookup  index=x => x.ProductId", CB_ADD),
+        ("", "2 rows, 2 scanned", CB_DIM),
+        ("", "", CB_DIM),
+        ("", "WHERE  unit_price >= ?", CB_CHALK),
+        ("", "Filter GE($3, ?0)", CB_CHALK),
+        ("", "  Read purchases", CB_CHALK),
+        ("", "2 rows, 10004 scanned", CB_DIM),
+    ]
+    write("chalkql-akade-indexedset.svg", svg("".join(board(23, lines, y=160, step=58)), CB_BG))
+
+
+for fn in (chalkql, mip_chart, tsfm, semifreddo, heartbeat, timerwheel,
+           chalkql_quickstart, chalkql_tutorial, chalkql_akade):
     fn()
 print("ok")
