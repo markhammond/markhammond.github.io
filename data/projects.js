@@ -50,7 +50,7 @@ window.SHOWCASE = {
       description:
         "The host keeps no copy of the corpus. ChalkQL pushes each tab's filter, sort, keyset seek and limit into PostgreSQL, reads the database and the rows the streams have just sent in one statement, and keeps every tab and filter in use current as an incrementally maintained standing view, all within a memory budget of a few megabytes.",
       cover: "assets/img/chalkql-virtual-blotter.webp",
-      tags: ["data-grid", "postgresql", "standing-views", "blazor", "chalkql"],
+      tags: ["data-grid", "postgresql", "standing-views", "blazor", "sql-editor", "chalkql"],
       run: "dotnet run -c Release --project dotnet/samples/Chalk.Sample.Blotter",
     },
     {
@@ -180,7 +180,7 @@ window.SHOWCASE = {
       description:
         "Simulated clients trade linear perpetuals against the house, which nets risk and hedges the residual on external venues. Drag fields to reshape it: the page writes the SQL, ChalkQL keeps it current as a standing view, and Tapline streams the cells that change.",
       cover: "assets/img/tapline-live_positions.webp",
-      tags: ["pivot", "sql", "chalkql", "pnl", "tapline"],
+      tags: ["pivot", "sql", "chalkql", "blazor", "pnl", "tapline"],
       run: "dotnet run --project samples/PivotTable.Sample",
     },
     {
@@ -195,7 +195,7 @@ window.SHOWCASE = {
       description:
         "The server maintains each reader's window; Tapline carries it to the browser as binary rows, only what changed, conflated to the reader's link; the page draws the rows itself. Warm, a grid's session allocates nothing on an answer's way to the wire, and each session works within a 64 MB budget.",
       cover: "assets/img/tapline-live_grid.webp",
-      tags: ["data-grid", "postgresql", "alerts", "chalkql", "tapline"],
+      tags: ["data-grid", "postgresql", "chalkql", "blazor", "sql-editor", "tapline"],
       run: "dotnet run --project samples/LiveGrid.Sample",
     },
     {
@@ -210,7 +210,7 @@ window.SHOWCASE = {
       description:
         "Reception, each GP, the practice manager, each patient and carer, and each waiting-room screen sees the same activity from their own perspective. Each person's feed is theirs alone.",
       cover: "assets/img/tapline-activity_feeds.webp",
-      tags: ["activity-feed", "privacy", "entitlements", "access-control", "tapline"],
+      tags: ["activity-feed", "privacy", "entitlements", "blazor", "access-control", "tapline"],
       run: "dotnet run --project samples/ActivityFeed.Sample",
     },
     {
@@ -225,7 +225,7 @@ window.SHOWCASE = {
       description:
         "Illustrative only: password sign-in uses opaque-ke through Tapline.Authentication.Opaque. Shows how authentication modules plug into the router and how providers can refuse anonymous connections.",
       cover: "assets/img/tapline-sign_in.webp",
-      tags: ["security", "passkeys", "opaque", "authentication", "tapline"],
+      tags: ["security", "passkeys", "authentication", "blazor", "opaque", "tapline"],
       run: "dotnet run --project samples/SignIn.Sample",
     },
 
